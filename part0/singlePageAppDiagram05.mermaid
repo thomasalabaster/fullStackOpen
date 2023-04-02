@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server->>browser: 200 - text/html charset=utf-8 
+    deactivate server
+    Note right of browser: Returns HTML for browser to render
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server->>browser: 200 - text/css
+    deactivate server
+    Note right of browser: Returns CSS for browser to render
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server->>browser: 200 - application/javascript
+    deactivate server
+    Note right of browser: Returns Javascript for page to use
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server->>browser: 200 - application/json
+    deactivate server
+    Note right of browser: Returns JSON for page to use

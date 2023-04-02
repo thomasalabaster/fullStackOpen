@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    server->>browser: 201
+    deactivate server
+    Note right of browser: server doesn't ask for redirect, browser stays on same page, sends no further HTTP requests
+    Note right of browser: SPA App doesn't send form data, uses JS to deal with the submit
+    Note right of browser: form.onsubmit = function (e)  function is called upon submit
+    Note right of browser: JS rerenders note list and sends  to the server
+
+
+    
