@@ -1,0 +1,36 @@
+```mermaid
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server->>browser: URL Redirect (302) - /exampleapp/notes
+    deactivate server
+    Note right of browser: with the form submission data "note: Testing"
+    Note right of browser: Data is sent as the body of the POST request
+    Note right of browser: Server accesses data by accessing req.body field request object
+    Note right of browser: The server creates a new note object, and adds it to an array called notes. 
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server->>browser: Reloads the notes page
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: CSS file
+    deactivate server
+
+    Note right of browser:  Browser executes JavaScript, which fetches JSON from the server 
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: JavaScript file
+    deactivate server
+    Note right of browser: Onreadystatechange function activates, renders the notes, including new one    
+```
