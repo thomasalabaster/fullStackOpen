@@ -56,7 +56,6 @@ const App = () => {
     const randomNum = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomNum);
   }
-
   return (
     <div>
       <Header text="Anecdote of the day" />

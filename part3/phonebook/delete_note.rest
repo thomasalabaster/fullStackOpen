@@ -1,0 +1,13 @@
+DELETE http://localhost:3001/api/phonebook/29241
+
+###
+
+POST http://localhost:3001/api/numbers
+Content-Type: application/json
+
+{   
+    "name": "Tim",
+    "number": "544-335-4544"
+}
+
+
