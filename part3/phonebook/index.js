@@ -83,7 +83,7 @@ app.get('/info', (request, response) => {
   `)
 })
 
-app.post('/api/numbers', (request, response) => {
+app.post('/api/phonebook', (request, response) => {
   // Generate random number for id
   const randomInt = () => Math.floor(Math.random() * 100000)
 
