@@ -18,6 +18,7 @@ app.use(cors())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
 app.use(express.json())
 app.use(requestLogger)
+app.use(express.static('build'))
 
 
 let phonebook = [
@@ -115,6 +116,7 @@ app.post('/api/numbers', (request, response) => {
   response.json(newNumber)
 })
 
+// Error catching for non-used endpoints
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }

@@ -1,0 +1,9 @@
+https://phonebook-fwff.onrender.com
+
+###
+
+GET https://phonebook-fwff.onrender.com/api/phonebook
+
+####
+
+GET https://phonebook-fwff.onrender.com/api/phonebook/1
