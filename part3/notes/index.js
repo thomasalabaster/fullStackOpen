@@ -13,6 +13,7 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
+app.use(express.static('build'))
 app.use(express.json())
 app.use(requestLogger)
 
