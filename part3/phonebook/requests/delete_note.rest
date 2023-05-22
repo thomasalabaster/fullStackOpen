@@ -1,14 +1,18 @@
-DELETE http://localhost:3001/api/phonebook/29241
+DELETE http://localhost:3001/api/phonebook/asdasd
 
 ###
 
-POST http://localhost:3001/api/numbers
+POST http://localhost:3001/api/phonebook
 Content-Type: application/json
 
 {   
-    "name": "Tim",
-    "number": "544-335-4544"
+    "name": "george",
+    "number": "111-11"
 }
+
+###
+
+GET http://localhost:3001/api/phonebook/6468ff86f781f1c054d75ab4
 
 
 

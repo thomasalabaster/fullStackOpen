@@ -1,6 +1,12 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+require('dotenv').config()
 
+// Phonebook import from MongoDB
+const Phonebook = require('./models/phonebook')
+
+// Displays the request in console
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
@@ -9,10 +15,23 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
+// Error catching for non-used endpoints
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+// Checks for wrong ID, passes error to Express if not
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+  next(error)
+}
+
 let morgan = require('morgan')
 morgan.token('type', function (req, res) { return JSON.stringify(req.body) })
-
-const cors = require('cors')
 
 app.use(cors())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
@@ -20,109 +39,95 @@ app.use(express.json())
 app.use(requestLogger)
 app.use(express.static('build'))
 
-
 let phonebook = [
-    { 
-      "id": 1,
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": 2,
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": 3,
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": 4,
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
 ]
 
-app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
-})
-
+// Display all the notes
 app.get('/api/phonebook', (request, response) => {
-    response.json(phonebook)
+  Phonebook.find({}).then(numbers => {
+    response.json(numbers)
+  })
 })
 
-app.get('/api/phonebook/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const contact = phonebook.find(person => person.id === id)
-
-    if (contact) {
-      response.json(contact)
-    } else {
-      response.status(404).end()
+// Display specific entry by ID
+app.get('/api/phonebook/:id', (request, response, next) => {
+  // Get the id from request and search in Phonebook
+  const findId = request.params.id
+  Phonebook.findOne({ _id: findId  })
+  .then(entry => {
+    if (entry) {
+      response.json(entry)
     }
+  })
+  // Throw if id not found
+  .catch(error => next(error))
 })
 
-app.delete('/api/phonebook/:id', (request, response) => {
-  const id = Number(request.params.id)
-  phonebook = phonebook.filter(contact => contact.id !== id)
-
-  response.status(204).end()
+// Delete entry by ID
+app.delete('/api/phonebook/:id', (request, response, next) => {
+  Phonebook.findByIdAndDelete(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
+// Display info about the phonebook application
 app.get('/info', (request, response) => {
-  let phonebookLen = phonebook.length
-  const currentDate = new Date();
-  const formattedDate = currentDate.toString();
 
-  response.send(`
-    <div>
-      <p>Phonebook has info for ${phonebookLen} people</p>
-      <p>${formattedDate}</p>
-    </div>
-  `)
+  Phonebook.countDocuments({})
+    .then(count => {
+      const currentDate = new Date();
+      const formattedDate = currentDate.toString();
+
+      response.send(`
+        <div>
+          <p>Phonebook has info for ${count} people</p>
+          <p>${formattedDate}</p>
+        </div>
+      `)
+    })
 })
 
-app.post('/api/phonebook', (request, response) => {
-  // Generate random number for id
-  const randomInt = () => Math.floor(Math.random() * 100000)
+// Update current entry
+app.put('/api/phonebook/:id', (request, response, next) => {
+  // Obtain body and create new entry to overwrite current
+  const body = request.body
+  const newNumber = {
+    number: body.number
+  }
+   
+  // Find current note and update (new: true returns object after change)
+  Phonebook.findByIdAndUpdate(request.params.id, newNumber, { new: true })
+  .then(updatedEntry => {
+    response.json(updatedEntry)
+    })
+    .catch(error => next(error))
+})
 
+// Add new person to the phonebook/ammend current entry
+app.post('/api/phonebook', (request, response, next) => {
   // Get the body of the request
   const body = request.body
 
-  // Check if name or number are empty
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: "content missing"
-    })
+  // Check if name or number fields are undefined
+  if (body.name === undefined || body.number === undefined) {
+    return response.status(400).json({ error: 'content missing' })
   }
 
-  // Check if name exists alreay
-  if (phonebook.filter(number => number.name === body.name).length > 0) {
-    return response.status(400).json({
-      error: "name must be unique"
-    });
-  }
-
-  // New obj to be added to phonebook
-  const newNumber = {
-    id: randomInt(),
-    number: body.number,
+  const person = new Phonebook ({
     name: body.name,
-  }
+    number: body.number
+  })
 
-  // Add new obj to phonebook
-  phonebook = phonebook.concat(newNumber)
-  response.json(newNumber)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
-// Error catching for non-used endpoints
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
-
 app.use(unknownEndpoint)
+app.use(errorHandler)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
