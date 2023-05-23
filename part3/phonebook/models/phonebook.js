@@ -14,9 +14,22 @@ mongoose.connect(url)
 
 // Define schema of phonebook
 const phonebookSchema = new mongoose.Schema({
-    name: String,
-    number: String,
-})
+    name: {
+        type: String,
+        minLength: 3,
+        required: true
+    },
+    number: {
+        type: String,
+        minLength: 8,
+        validate: {
+            validator: function (value) {
+                // Regex for phone number validation
+                return /^\d{2,3}-\d+$/.test(value)
+            },
+            message: "Invalid phone number format."
+        }
+}})
 
 // JSON parsing of MongoDB Response
 phonebookSchema.set('toJSON', {

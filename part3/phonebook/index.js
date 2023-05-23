@@ -23,10 +23,15 @@ const unknownEndpoint = (request, response) => {
 // Checks for wrong ID, passes error to Express if not
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
-
+  // Incorrect ID
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
+  } 
+  // Failed the schema validation in /models
+  else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
+
   next(error)
 }
 
@@ -120,9 +125,11 @@ app.post('/api/phonebook', (request, response, next) => {
     number: body.number
   })
 
-  person.save().then(savedPerson => {
+  person.save()
+    .then(savedPerson => {
     response.json(savedPerson)
-  })
+    })
+    .catch(error => next(error))
 })
 
 app.use(unknownEndpoint)
