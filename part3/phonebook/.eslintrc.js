@@ -13,16 +13,29 @@ module.exports = {
 	"rules": {
 		"indent": [
 			"error",
-			"tab"
+			"tab",
 		],
 		"linebreak-style": [
 			"error",
 			"windows"
 		],
-		"quotes": ["error", "double", { avoidEscape: true, allowTemplateLiterals: true }],
+		"quotes": [
+			"error",
+			"double",
+			{ avoidEscape: true, allowTemplateLiterals: true }
+		],
 		"semi": [
 			"error",
 			"never"
-		]
-	}
+		],
+		"eqeqeq": "error",
+		"no-trailing-spaces": "error",
+		"object-curly-spacing": [
+			"error", "always"
+		],
+		"arrow-spacing": [
+			"error", { "before": true, "after": true }
+		],
+		"no-console": 0
+	},
 }

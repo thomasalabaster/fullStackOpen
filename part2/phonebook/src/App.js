@@ -32,9 +32,15 @@ const App = () => {
       .deletePersons(toBeDeleted.id)
       .then(() => {
         personService
+        
           .getAll()
           .then(response => {
             setPersons(response.data)
+            setMessage(`${toBeDeleted.name} removed from database`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 3000)
+
           })
       })
     }
@@ -57,8 +63,6 @@ const App = () => {
             personService
               .getAll()
               .then(response => {
-                 // Add temporary message showing who was modified
-                 console.log("newName", newName)
                 setMessage(`${newName}'s number has been successfully updated`)
                 setTimeout(() => {
                   setMessage(null)

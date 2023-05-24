@@ -26,7 +26,7 @@ const errorHandler = (error, request, response, next) => {
 	// Incorrect ID
 	if (error.name === "CastError") {
 		return response.status(400).send({ error: "malformatted id" })
-	} 
+	}
 	// Failed the schema validation in /models
 	else if (error.name === "ValidationError") {
 		return response.status(400).json({ error: error.message })
@@ -98,7 +98,7 @@ app.put("/api/phonebook/:id", (request, response, next) => {
 	const newNumber = {
 		number: body.number
 	}
-   
+
 	// Find current note and update (new: true returns object after change)
 	Phonebook.findByIdAndUpdate(request.params.id, newNumber, { new: true })
 		.then(updatedEntry => {

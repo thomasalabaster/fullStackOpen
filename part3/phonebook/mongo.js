@@ -34,7 +34,7 @@ else if (process.argv.length === 5) {
 	// Obtain args
 	const newName = process.argv[3]
 	const newNumber = process.argv[4]
-    
+
 	// Connect to server
 	mongoose.connect(url)
 

@@ -29,7 +29,7 @@ const phonebookSchema = new mongoose.Schema({
 			},
 			message: "Invalid phone number format."
 		}
-	}})
+	} })
 
 // JSON parsing of MongoDB Response
 phonebookSchema.set("toJSON", {
