@@ -108,6 +108,13 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      .catch(error => {
+        // Display reason for error
+        setMessage(error.response.data.error);
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
   }
 
   const handleFilterChange = (event) => {

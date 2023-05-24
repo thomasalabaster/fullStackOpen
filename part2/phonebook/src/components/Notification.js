@@ -44,7 +44,7 @@ const Notification = ({ message }) => {
             </div>
         )
     }
-    else if (message.toLowerCase().includes("removed")) {
+    else if (message.toLowerCase().includes("removed") || message.toLowerCase().includes("failed")) {
         return (
             <div style={removedStyle}>
                 {message}
@@ -52,6 +52,7 @@ const Notification = ({ message }) => {
         )
     }
     else {
+        console.log("Front-end Componnent - Notification.js of bottom else")
         return null
     }
 }
