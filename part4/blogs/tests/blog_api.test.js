@@ -45,6 +45,25 @@ test("a valid blog post can be added", async () => {
     )
 })
 
+test("deletion of a blog", async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(
+        helper.initialBlogs.length -1
+    )
+
+    const blogs = blogsAtEnd.map(blog => blog.title)
+
+    expect(blogs).not.toContain(blogToDelete.title)
+})
+
 test("a non-valid blog post attempt at adding", async () => {
     const newBlog = {
         author: "Missing Title",
@@ -61,6 +80,20 @@ test("a non-valid blog post attempt at adding", async () => {
 
     const titles = blogsAtEnd.map((blog) => blog.title)
     expect(titles).not.toContain("Missing Title")
+})
+
+test("if likes can be updated", async () => {
+    const updatedLikes = 5
+    const blogs = await helper.blogsInDb()
+
+    const firstBlog = blogs.find(blog => blog.id)
+    const response = await api
+        .put(`/api/blogs/${firstBlog.id}`)
+        .send({ likes: updatedLikes })
+        .expect(204)
+
+    const updatedBlog = await Blog.findById(firstBlog.id)
+    expect(updatedBlog.likes).toBe(updatedLikes)
 })
 
 
