@@ -25,12 +25,18 @@ blogsRouter.get("/:id", (request, response) => {
 
 blogsRouter.post("/", (request, response) => {
   const blog = new Blog(request.body)
+  // Check if missing title or url
+  if (!blog.title || !blog.url) {
+    return response.status(400).json({ error: "Title and URL are required" })
+  }
   blog
     .save()
     .then(result => {
       response.status(201).json(result)
     })
+    .catch(() => {
+      console.log("not succesful")
+    })
 })
-
 
 module.exports = blogsRouter

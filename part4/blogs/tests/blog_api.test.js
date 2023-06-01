@@ -45,6 +45,35 @@ test("a valid blog post can be added", async () => {
     )
 })
 
+test("a non-valid blog post attempt at adding", async () => {
+    const newBlog = {
+        author: "Missing Title",
+        likes: 34,
+    }
+
+    const response = await api.post("/api/blogs").send(newBlog)
+
+    expect(response.status).toBe(400)
+    expect(response.headers["content-type"]).toMatch(/application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+    const titles = blogsAtEnd.map((blog) => blog.title)
+    expect(titles).not.toContain("Missing Title")
+})
+
+
+test("if likes property is missing, defaults at 0", async () => {
+    const response = await api.get("/api/blogs")
+    const blogs = response.body.map((b) => ({ ...b, likes: b.likes || 0 }))
+
+    blogs.forEach((blog) => {
+        expect(blog.likes).toBeDefined()
+        expect(blog.likes).toBeGreaterThanOrEqual(0)
+    })
+})
+
 test("blogs have id property", async() => {
     const response = await api.get("/api/blogs")
 
