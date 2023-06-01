@@ -87,7 +87,7 @@ test("if likes can be updated", async () => {
     const blogs = await helper.blogsInDb()
 
     const firstBlog = blogs.find(blog => blog.id)
-    const response = await api
+    await api
         .put(`/api/blogs/${firstBlog.id}`)
         .send({ likes: updatedLikes })
         .expect(204)
