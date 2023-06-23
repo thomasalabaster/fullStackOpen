@@ -1,0 +1,65 @@
+GET http://localhost:3003/api/users
+###
+GET http://localhost:3003/api/blogs
+###
+GET http://localhost:3003/api/blogs/6495c09182b7c4ae9bafd6df
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "talabaster",
+    "name": "tom",
+    "password": "password"
+}
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "Cheryl",
+    "name": "Cheryl",
+    "password": "password"
+}
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "Cheryl",
+    "password": "password"
+}
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNoZXJ5bCIsImlkIjoiNjQ5NWMxYjUzYTc4MmEzNjA5NTViZWZlIiwiaWF0IjoxNjg3NTM2MTI4fQ.sXY4jPUWydI945HMntUTIccklrtkWjdxZZx7rl3M4lI
+
+{
+    "title": "Houses",
+    "url": "www.housesForSale.com",
+    "likes": 5
+}
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRhbGFiYXN0ZXIiLCJpZCI6IjY0ODEwYWQ5NTljZTM5NGJjYWYwYTQ1OCIsImlhdCI6MTY4NzQ1ODg3OH0.Zp8WwFfzrCgiooREUy-U9kedeIxJ1EsNug7HlUPZ-nQ
+
+{
+    "title": "Windows",
+    "url": "www.windowsForSale.com",
+    "likes": 123
+}
+###
+DELETE http://localhost:3003/api/blogs/6495cfa7ef1f9205a3c7f447
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRhbGFiYXN0ZXIiLCJpZCI6IjY0ODEwYWQ5NTljZTM5NGJjYWYwYTQ1OCIsImlhdCI6MTY4NzQ1ODg3OH0.Zp8WwFfzrCgiooREUy-U9kedeIxJ1EsNug7HlUPZ-nQ
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "paul",
+    "password": "password"
+}
+###
+DELETE http://localhost:3003/api/blogs/646e3b85b41a5d9a2590667b
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhdWwiLCJpZCI6IjY0ODExZWRkNTVkOWNhOWYyNDIwMmU0MyIsImlhdCI6MTY4NzUzNTE5OH0.cA85mgV8Pz7Um5rleccsCIdGm6nlhlOFiiIxaTnkuAQ

@@ -19,11 +19,7 @@ module.exports = {
 			"error",
 			"windows"
 		],
-		"quotes": [
-			"error",
-			"double",
-			{ avoidEscape: true, allowTemplateLiterals: true }
-		],
+		"quotes": "off",
 		"semi": [
 			"error",
 			"never"

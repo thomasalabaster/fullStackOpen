@@ -15,3 +15,7 @@ GET http://localhost:3003/api/blogs
 ###
 
 GET http://localhost:3003/api/blogs/646e3b85b41a5d9a2590667b
+
+###
+
+GET http://localhost:3003/api/users
