@@ -5,7 +5,15 @@ Content-Type: application/json
     "name": "Superuser",
     "password": "salainen"
 }
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
 
+{
+    "username": "tom",
+    "name": "tom",
+    "password": "password"
+}
 
 ### 
 GET http://localhost:3001/api/users
